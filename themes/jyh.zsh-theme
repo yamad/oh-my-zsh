@@ -15,12 +15,22 @@ else
 fi
 
 # prompt
-PROMPT='[%{$fg[$NCOLOR]%}%B%n%b%{$reset_color%}:%{$fg[red]%}%30<...<%~%<<%{$reset_color%}]%(!.#.$) '
-PROMPT='%{$fg[$NCOLOR]%}%B%n%b%{$reset_color%} %{$fg[red]%}%30<...<%~%<<%{$reset_color%} %{$fg[gray]%}%(!.#.$)%{$reset_color%} '
-RPROMPT='$(git_prompt_info)'
+USERPR='%{$fg[$NCOLOR]%}%B%n%b%{$reset_color%}'
+PATHPR='%{$fg[red]%}%30<...<%~%<<%{$reset_color%}'
+SYMBOLPR='%{$fg[gray]%}%(!.#.$)%{$reset_color%}'
+
+if [ $IN_NIX_SHELL -eq 1 ]; then
+    NIXPR='%{$fg[green]%}%B|nix%b%{$reset_color%}'
+else
+    NIXPR=''
+fi
+PROMPT=${USERPR}${NIXPR}" "${PATHPR}" "${SYMBOLPR}" "
+
+GITINFO='$(git_prompt_info)'
+RPROMPT=${GITINFO}
 
 # git theming
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[gray]%}(%{$fg_no_bold[gray]%}%B"
-ZSH_THEME_GIT_PROMPT_SUFFIX="%b%{$fg_bold[gray]%})%{$reset_color%} "
+ZSH_THEME_GIT_PROMPT_SUFFIX="%b%{$fg_bold[gray]%})%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_CLEAN=""
 ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg_bold[red]%}*"
